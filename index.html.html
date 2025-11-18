@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Flashcards – Anticorpos e Sistema Complemento – Prof. Márcio Marques</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .header {
+            color: #2c3e50;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        button {
+            background-color: #4682b4;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1em;
+        }
+
+        button:hover {
+            background-color: #315f7c;
+        }
+
+        .title-card {
+            text-align: center;
+            font-size: 2em;
+            color: #2c3e50;
+        }
+
+        .question {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .answer {
+            font-size: 1.2em;
+            color: #2e8b57;
+            text-align: center;
+            display: none;
+        }
+
+        .show-answer .answer {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Produzido por Prof. Márcio Marques<br>
+        Siga no Insta: @profmarciomarx
+    </div>
+    <div class="container">
+        <div class="card">
+            <div class="title-card">Flashcards – Anticorpos e Sistema Complemento<br>Clique no botão “Próximo” e navegue pelos botões.<br>Tente responder antes de clicar no cartão.</div>
+        </div>
+    </div>
+    <div class="navigation">
+        <button onclick="goPrevious()">Anterior</button>
+        <button onclick="goHome()">Início</button>
+        <button onclick="goNext()">Próximo</button>
+    </div>
+
+    <script>
+        const cardsData = [
+            { pergunta: "O que são anticorpos?", resposta: "Anticorpos são proteínas produzidas pelos linfócitos B que reconhecem e se ligam a antígenos específicos." },
+            { pergunta: "Qual é a principal função dos anticorpos?", resposta: "Identificar e neutralizar antígenos como bactérias, vírus ou toxinas." },
+            { pergunta: "Qual é o formato estrutural típico dos anticorpos?", resposta: "Formato em Y." },
+            { pergunta: "Quantas cadeias compõem um anticorpo?", resposta: "Duas cadeias leves e duas cadeias pesadas." },
+            { pergunta: "O que permite a flexibilidade dos anticorpos?", resposta: "A região de dobradiça." },
+            { pergunta: "Qual tipo de ligação estabiliza a estrutura dos anticorpos?", resposta: "Pontes dissulfeto." },
+            { pergunta: "O que define a especificidade de ligação do anticorpo?", resposta: "A região variável (região V)." },
+            { pergunta: "O que é a região constante das imunoglobulinas?", resposta: "É a parte estrutural que determina a classe e funções efetoras do anticorpo." },
+            { pergunta: "O que é a região Fc?", resposta: "Porção constante que interage com células e proteínas do sistema imune." },
+            { pergunta: "Onde ficam os sítios de ligação ao antígeno?", resposta: "Nas extremidades das regiões variáveis." },
+            { pergunta: "O que é valência do anticorpo?", resposta: "Número de sítios disponíveis para ligar antígenos." },
+            { pergunta: "Qual imunoglobulina possui maior valência?", resposta: "IgM pentamérica." },
+            { pergunta: "Qual imunoglobulina predomina na resposta secundária?", resposta: "IgG." },
+            { pergunta: "Qual é a principal imunoglobulina das mucosas?", resposta: "IgA." },
+            { pergunta: "Qual imunoglobulina está relacionada a alergias e parasitas?", resposta: "IgE." },
+            { pergunta: "Qual imunoglobulina está na superfície dos linfócitos B?", resposta: "IgD." },
+            { pergunta: "Qual imunoglobulina é a primeira produzida no encontro com um antígeno?", resposta: "IgM." },
+            { pergunta: "O que é um epítopo?", resposta: "A porção específica do antígeno reconhecida pelo anticorpo." },
+            { pergunta: "Como a afinidade dos anticorpos muda ao longo da resposta imune?", resposta: "A afinidade aumenta após a maturação de afinidade." },
+            { pergunta: "O que é neutralização realizada por anticorpos?", resposta: "É o bloqueio direto de toxinas ou vírus." },
+            { pergunta: "O que é opsonização?", resposta: "Marcação do patógeno para facilitar fagocitose." },
+            { pergunta: "Qual região do anticorpo participa da opsonização?", resposta: "A região Fc." },
+            { pergunta: "O que ativa a via clássica do complemento?", resposta: "A ligação de C1q a anticorpos IgG ou IgM ligados ao antígeno." },
+            { pergunta: "Qual é a principal proteína clivada nas três vias do complemento?", resposta: "C3." },
+            { pergunta: "Quais fragmentos surgem da clivagem de C3?", resposta: "C3a e C3b." },
+            { pergunta: "Qual é a função do C3b?", resposta: "Opsonização de patógenos." },
+            { pergunta: "Qual a função do C3a?", resposta: "Mediação da inflamação como anafilatoxina." },
+            { pergunta: "O que ativa a via alternativa do complemento?", resposta: "O contato espontâneo de C3 com superfícies microbianas." },
+            { pergunta: "O que ativa a via das lectinas?", resposta: "A ligação de lectinas a carboidratos microbianos." },
+            { pergunta: "O que é o complexo de ataque à membrana (MAC)?", resposta: "Estrutura formada por C5b–C9 que perfura membranas." },
+            { pergunta: "Qual é a principal função do MAC?", resposta: "Lise direta de patógenos." },
+            { pergunta: "Qual é a função das anafilatoxinas C3a e C5a?", resposta: "Aumentar inflamação e atrair leucócitos." },
+            { pergunta: "Qual componente do complemento é mais importante na quimiotaxia?", resposta: "C5a." },
+            { pergunta: "O que impede que o complemento ataque células próprias?", resposta: "Proteínas reguladoras como fator H e inibidor de C1." },
+            { pergunta: "O que são imunocomplexos?", resposta: "Conjuntos formados por antígeno e anticorpo." },
+            { pergunta: "Como o complemento auxilia na remoção de imunocomplexos?", resposta: "C3b facilita a limpeza desses complexos pelo fígado e baço." },
+            { pergunta: "Por que a IgM é mais eficiente na via clássica?", resposta: "Por ser pentamérica e expor várias regiões Fc simultaneamente." },
+            { pergunta: "Qual imunoglobulina atravessa a placenta?", resposta: "IgG." },
+            { pergunta: "Qual é a principal classe de imunoglobulina encontrada no leite materno?", resposta: "IgA secretora." },
+            { pergunta: "O que caracteriza a cadeia leve?", resposta: "É menor e contém regiões variáveis e constantes." },
+            { pergunta: "O que caracteriza a cadeia pesada?", resposta: "Define a classe da imunoglobulina." },
+            { pergunta: "O que determina se um anticorpo será IgG, IgA, IgM, IgE ou IgD?", resposta: "O tipo de cadeia pesada." },
+            { pergunta: "O que é a região Fab?", resposta: "Porção que contém o sítio de ligação ao antígeno." },
+            { pergunta: "O que diferencia Fab de Fc?", resposta: "Fab liga antígeno; Fc interage com células e complemento." },
+            { pergunta: "O que é maturação de afinidade?", resposta: "Processo de aprimoramento da ligação do anticorpo ao antígeno." },
+            { pergunta: "Como as imunoglobulinas participam da inflamação?", resposta: "Por meio da ativação do complemento e sinalização celular." },
+            { pergunta: "Como IgE ativa mastócitos?", resposta: "Sua região Fc liga-se a receptores FcεRI em mastócitos." },
+            { pergunta: "Como a IgG facilita fagocitose?", resposta: "Ligando-se a receptores Fcγ em fagócitos." },
+            { pergunta: "O que acontece com o anticorpo após ligar o antígeno?", resposta: "Ele pode ativar células, o complemento ou neutralizar o patógeno." },
+            { pergunta: "Qual é o papel das lectinas na imunidade inata?", resposta: "Reconhecer carboidratos microbianos e ativar o complemento." }
+        ];
+
+        let currentCard = 0;
+        const cardElement = document.querySelector('.card');
+
+        function updateCard() {
+            if (currentCard === 0) {
+                cardElement.innerHTML = `<div class="title-card">Flashcards – Anticorpos e Sistema Complemento<br>Clique no botão “Próximo” e navegue pelos botões.<br>Tente responder antes de clicar no cartão.</div>`;
+            } else {
+                const cardData = cardsData[currentCard - 1];
+                cardElement.innerHTML = `
+                    <div class="question">${cardData.pergunta}</div>
+                    <div class="answer">${cardData.resposta}</div>
+                `;
+                cardElement.classList.remove('show-answer');
+            }
+        }
+
+        function goPrevious() {
+            currentCard = Math.max(0, currentCard - 1);
+            updateCard();
+        }
+
+        function goNext() {
+            currentCard = Math.min(cardsData.length, currentCard + 1);
+            updateCard();
+        }
+
+        function goHome() {
+            currentCard = 0;
+            updateCard();
+        }
+
+        cardElement.addEventListener('click', () => {
+            if (currentCard !== 0) {
+                cardElement.classList.toggle('show-answer');
+            }
+        });
+
+        updateCard();
+    </script>
+</body>
+</html>
